@@ -47,6 +47,10 @@ jobs:
       - name: Create Certificates Directory
         run: node assembly/create-certs-dir.mjs
 
+      - name: List Certs Dir
+        run: ls -al assembly/secure
+      
+
       - name: Start Assembly Worker
         run: node ./assembly/worker.js --cloud &
 
