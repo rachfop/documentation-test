@@ -14,9 +14,13 @@ async function run() {
       await useLocal();
   }
 
+  const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
   async function useCloud() {
-    const cert = await fs.readFile("./secure/docs-assembly.pem");
-    const key = await fs.readFile("./secure/docs-assembly.key");
+    const certPath = path.join(__dirname, "secure/docs-assembly.pem");
+    const keyPath = path.join(__dirname, "secure/docs-assembly.key");
+    const cert = await fs.readFile(certPath);
+    const key = await fs.readFile(keyPath);  
     const connection = await NativeConnection.connect({
       address: "docs-assembly.a2dd6.tmprl.cloud",
       tls: {
