@@ -57,11 +57,10 @@ jobs:
           node ./worker.js --cloud &
           cd ..
 
-      - name: Assemble, Format, and Build Documentation
+      - name: Assemble and Format
         run: |
-          ./assemble.js --cloud
+          ./assemble.js --cloud &
           dprint fmt
-          docusaurus build
 
       - name: Commit Documentation Changes
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
