@@ -49,8 +49,8 @@ jobs:
         env:
           TEMPORAL_ADDRESS: docs-assembly.a2dd6.tmprl.cloud
           TEMPORAL_NAMESPACE: docs-assembly.a2dd6
-          TEMPORAL_TLS_CERT: ./assembly/secure/docs-assembly.pem
-          TEMPORAL_TLS_KEY: ./assembly/secure/docs-assembly.key
+          TEMPORAL_TLS_CERT: ${{ secrets.TEMPORAL_TLS_CERT }}
+          TEMPORAL_TLS_KEY: ${{ secrets.TEMPORAL_TLS_KEY }}
 
       # Start the worker in the background.
       - name: Start Worker
