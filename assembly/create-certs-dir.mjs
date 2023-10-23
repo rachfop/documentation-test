@@ -8,14 +8,13 @@ const targetDir = join(currentDir, "secure");
 await fs.mkdir(targetDir, { recursive: true });
 await fs.writeFile(join(targetDir, "docs-assembly.pem"), process.env.TEMPORAL_CLIENT_CERT);
 await fs.writeFile(join(targetDir, "docs-assembly.key"), process.env.TEMPORAL_CLIENT_KEY);
-// create cloud-connection.json file
 await fs.writeFile(
   join(targetDir, "cloud-connection.json"),
   JSON.stringify(
     {
-      address: "docs-assembly.a2dd6.tmprl.cloud",
-      unique_id: "GitHub-Actions-Assembly-Test",
-      namespace: "docs-assembly.a2dd6",
+      "address": "docs-assembly.a2dd6.tmprl.cloud:7233",
+      "namespace": "docs-assembly.a2dd6",
+      "unique_id": "GitHub-Actions-Assembly-Test",
     },
     null,
     2
