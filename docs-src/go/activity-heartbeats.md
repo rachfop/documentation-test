@@ -10,6 +10,7 @@ tags:
   - go sdk
 ---
 
+TESTING!
 An [Activity Heartbeat](/concepts/what-is-an-activity-heartbeat) is a ping from the [Worker Process](/concepts/what-is-a-worker-process) that is executing the Activity to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster).
 Each Heartbeat informs the Temporal Cluster that the [Activity Execution](/concepts/what-is-an-activity-execution) is making progress and the Worker has not crashed.
 If the Cluster does not receive a Heartbeat within a [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/concepts/what-is-an-activity-task-execution) may be scheduled according to the Retry Policy.

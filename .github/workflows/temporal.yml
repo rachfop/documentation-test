@@ -1,0 +1,70 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: yarn
+
+  build-docs:
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    env:
+      TEMPORAL_CLIENT_CERT: ${{ secrets.TEMPORAL_CLIENT_CERT }}
+      TEMPORAL_CLIENT_KEY: ${{ secrets.TEMPORAL_CLIENT_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install Root Dependencies
+        run: yarn
+
+      - name: Install Assembly Dependencies
+        run: |
+          cd assembly
+          yarn
+
+      - name: Create Certificates Directory
+        run: node assembly/create-certs-dir.mjs
+
+      - name: List Certs Dir
+        run: ls -al assembly/secure
+      
+
+      - name: Start Assembly Worker
+        run: |
+          cd assembly
+          node ./worker.js --cloud &
+          cd ..
+
+      - name: Assemble and Format
+        run: |
+          ./assemble.js --cloud
+      - name: Format
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        run: npx dprint fmt
+      - name: Commit Documentation Changes
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Automated Change
