@@ -12,4 +12,4 @@ export { updateCoverageBoard } from "./updateCoverageBoard.js";
 export { genCLI } from "./genCLI.js";
 export { getSamplesRepos } from "./getSamplesRepos.js";
 export { createNodesFromSamples } from "./createNodesFromSamples.js";
-export { genReport } from "./genReport.js";
+

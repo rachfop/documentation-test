@@ -44,7 +44,7 @@ export async function fullAssembly(params) {
 
     await activities.updateCoverageBoard(config);
   }
-  await activities.genReport(config);
+
 
   await activities.cleanUpTempDir(config);
 
