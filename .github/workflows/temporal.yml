@@ -9,6 +9,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: yarn
 
   build-docs:
     if: ${{ github.event_name == 'pull_request' }}
@@ -43,7 +53,6 @@ jobs:
           TEMPORAL_TLS_KEY: ./assembly/secure/docs-assembly.key
 
       # Start the worker in the background.
-      # Adding `&` at the end to run it in the background.
       - name: Start Worker
         run: node ./assembly/worker.js --cloud &
 
@@ -53,6 +62,7 @@ jobs:
           ./assemble.js --cloud
           dprint fmt
           docusaurus build
+
       - name: Commit changes
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
         uses: stefanzweifel/git-auto-commit-action@v4
