@@ -7,4 +7,4 @@ const targetDir = join(currentDir, "secure");
 
 await fs.mkdir(targetDir, { recursive: true });
 await fs.writeFile(join(targetDir, "docs-assembly.pem"), process.env.TEMPORAL_CLIENT_CERT);
-await fs.writeFile(join(targetDir, "client.key"), process.env.TEMPORAL_CLIENT_KEY);
+await fs.writeFile(join(targetDir, "docs-assembly.key"), process.env.TEMPORAL_CLIENT_KEY);
