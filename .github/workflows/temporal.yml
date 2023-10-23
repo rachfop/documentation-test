@@ -10,7 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -27,44 +28,36 @@ jobs:
       TEMPORAL_CLIENT_CERT: ${{ secrets.TEMPORAL_CLIENT_CERT }}
       TEMPORAL_CLIENT_KEY: ${{ secrets.TEMPORAL_CLIENT_KEY }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # Install dependencies in root
       - name: Install Root Dependencies
         run: yarn
 
-      # Install dependencies in assembly directory
       - name: Install Assembly Dependencies
         run: |
           cd assembly
           yarn
 
-      # Create Certs Directory and Write Key and PEM
-      - name: Create Certs Dir
+      - name: Create Certificates Directory
         run: node assembly/create-certs-dir.mjs
-        env:
-          TEMPORAL_ADDRESS: docs-assembly.a2dd6.tmprl.cloud
-          TEMPORAL_NAMESPACE: docs-assembly.a2dd6
-          TEMPORAL_TLS_CERT: ${{ secrets.TEMPORAL_TLS_CERT }}
-          TEMPORAL_TLS_KEY: ${{ secrets.TEMPORAL_TLS_KEY }}
 
-      # Start the worker in the background.
-      - name: Start Worker
+      - name: Start Assembly Worker
         run: node ./assembly/worker.js --cloud &
 
-      # Run the assemble script
-      - name: Assemble and Build Documentation
+      - name: Assemble, Format, and Build Documentation
         run: |
           ./assemble.js --cloud
           dprint fmt
           docusaurus build
 
-      - name: Commit changes
+      - name: Commit Documentation Changes
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Assemble and Build Documentation
+          commit_message: "Assemble and Build Documentation"
