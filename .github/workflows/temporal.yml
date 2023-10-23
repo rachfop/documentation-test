@@ -59,11 +59,10 @@ jobs:
 
       - name: Assemble and Format
         run: |
-          ./assemble.js --cloud &
-          dprint fmt
+          ./assemble.js --cloud
 
       - name: Commit Documentation Changes
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Assemble and Build Documentation"
+          commit_message: "Assemble Documentation"
